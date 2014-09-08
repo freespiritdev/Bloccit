@@ -1,6 +1,6 @@
 require 'faker'
 
-#Create Posts
+# Create Posts
 50.times  do
   Post.create!(
     title: Faker::Lorem.sentence,
