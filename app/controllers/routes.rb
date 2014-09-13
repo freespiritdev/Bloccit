@@ -1,10 +1,12 @@
+#Rails.application.routes.draw do
+
 Bloccit::Application.routes.draw do
 
   devise_for :users
-    resources :topics do 
-      resources :posts, except: [:index]
-    end
-    
+  resources :posts
+    resources :topics
+
+
   get 'about' => 'welcome#about'
 
   root to: 'welcome#index'
