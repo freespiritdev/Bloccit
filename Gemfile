@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'bootstrap-sass', '~> 3.1.1'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.5'
+ruby '2.0.0'
 # Use sqlite3 as the database for Active Record
 group :production do
   gem 'pg'
