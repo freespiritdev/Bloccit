@@ -3,7 +3,7 @@
  describe VotesController do 
  
    #include TestFactories
-   include Devise::TestHelpers
+   include TestFactories
  
    # replaced authenticated_user and associated_post for FG
    describe '#up_vote' do
