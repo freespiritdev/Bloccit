@@ -62,6 +62,8 @@ gem 'will_paginate', '~> 3.0.5'
 
 group :test do
     gem 'rspec-rails'
+    gem 'minitest'
+    gem 'capybara'
 end
 
 #for debugging should only beinstalled in the development group

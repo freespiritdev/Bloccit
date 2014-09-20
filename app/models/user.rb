@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_many :comments
   has_many :votes, dependent: :destroy
   has_many :favorites, dependent: :destroy
+  
   mount_uploader :avatar, AvatarUploader
 
   def role?(base_role)
