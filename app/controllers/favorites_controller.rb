@@ -6,12 +6,13 @@ class FavoritesController < ApplicationController
     
     authorize! :create, Favorite, message: "You cannot do that"
 
-     if favorite.save
-       # Add code to generate a success flash and redirect to @post
-       # Remember the path shortcut: [@post.topic, @post]
-     else
-       # Add code to generate a failure flash and redirect to @post
-     end
+     if favorite.valid?
+      flash[:notice] = "Favorited post"
+      redirect_to [@topic, @post]
+    else
+      flash[:error] = "Unable to add favorite. Please try again."
+      redirect_to [@topic, @post]
+    end
 end
 
 def destroy

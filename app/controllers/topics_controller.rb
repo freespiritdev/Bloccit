@@ -1,6 +1,6 @@
 class TopicsController < ApplicationController
   def index
-     @topics = Topic.paginate(page: params[:page], per_page: 10)
+     @topics = Topic.visible_to(current_user).paginate(page: params[:page], per_page: 10)
      authorize @topics
   end
 
@@ -14,6 +14,10 @@ class TopicsController < ApplicationController
      @posts = @topic.posts.paginate(page: params[:page], per_page: 10)
      authorize @topic
   end
+
+  def show?
+     record.public? || user.present?
+   end
 
   def edit
      @topic = Topic.find(params[:id])
@@ -55,6 +59,7 @@ class TopicsController < ApplicationController
        render :edit
      end
    end
+   
    private
    def topic_params
     params.require(:topic).permit(:name, :description, :public)
