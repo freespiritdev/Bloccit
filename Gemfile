@@ -64,6 +64,8 @@ group :test do
     gem 'rspec-rails'
     gem 'minitest'
     gem 'capybara', '~> 2.3.0'
+      gem 'database_cleaner'
+        gem 'factory_girl_rails', '~>4.0'
 end
 
 #for debugging should only beinstalled in the development group

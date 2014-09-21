@@ -2,8 +2,6 @@
  
  describe VotesController do 
  
-   #include TestFactories
-   include TestFactories
  
    # replaced authenticated_user and associated_post for FG
    describe '#up_vote' do
