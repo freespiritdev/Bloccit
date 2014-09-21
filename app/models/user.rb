@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
          .joins(:comments) # Ties the comments table to the users table, via the user_id
          .group('users.id') # Instructs the database to group the results so that each user will be returned in a distinct row
          .order('rank DESC') # Instructs the database to order the results in descending order, by the rank that we created in this query. (rank = comment count + post count)
-   end
+  end
 
   def role?(base_role)
    role == base_role.to_s
@@ -33,6 +33,4 @@ class User < ActiveRecord::Base
   def voted(post)
     votes.where(post_id: post.id).first
   end
-
-   
 end

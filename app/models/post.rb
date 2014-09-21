@@ -1,15 +1,20 @@
 class Post < ActiveRecord::Base
   has_many :comments, dependent: :destroy
-  has_many :votes, dependent: :destroy
-  has_many :favorites, dependent: :destroy
   belongs_to :user
   belongs_to :topic
+  has_many :votes, dependent: :destroy
+  has_many :favorites, dependent: :destroy
+  
   mount_uploader :image, ImageUploader
 
   default_scope { order('rank DESC') }
-    scope :visible_to, -> (user) { user ? all : joins(:topic).where('topics.public' => true) }
+  scope :visible_to, -> (user) { user ? all : joins(:topic).where('topics.public' => true) }
 
-#added as test   
+  validates :title, length: { minimum: 5 }, presence: true
+  validates :body, length: { minimum: 20 }, presence: true
+  validates :topic, presence: true
+  validates :user, presence: true
+
   def up_votes
       votes.where(value: 1).count
   end
@@ -18,6 +23,10 @@ class Post < ActiveRecord::Base
     votes.where(value: -1).count
   end 
 
+  def points
+    votes.sum(:value)
+  end
+
   def update_rank
     age = (created_at - Time.new(1970,1,1)) / (60 * 60 * 24) # 1 day in seconds
     new_rank = points + age
@@ -25,10 +34,7 @@ class Post < ActiveRecord::Base
     update_attribute(:rank, new_rank)
   end
   
-  validates :title, length: { minimum: 5 }, presence: true
-  validates :body, length: { minimum: 20 }, presence: true
-  validates :topic, presence: true
-  validates :user, presence: true
+  
 
   private
   def create_vote

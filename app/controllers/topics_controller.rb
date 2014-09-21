@@ -13,12 +13,7 @@ class TopicsController < ApplicationController
      @topic = Topic.find(params[:id])
      authorize @topic
      @posts = @topic.posts.includes(:user).includes(:comments).paginate(page: params[:page], per_page: 10)
-
   end
-
-  def show?
-     record.public? || user.present?
-   end
 
   def edit
      @topic = Topic.find(params[:id])
@@ -35,29 +30,28 @@ class TopicsController < ApplicationController
        render :new
      end
    end
- 
- def destroy
+   
+   def update
      @topic = Topic.find(params[:id])
-     name = @topic.name
- 
      authorize @topic
+     if @topic.update_attributes(topic_params)
+       redirect_to @topic, notice: "Topic updated successfully."
+     else
+       flash[:error] = "Error saving topic. Please try again"
+       render :edit
+     end
+   end
+
+   def destroy
+     @topic = Topic.find(params[:id])
+     authorize @topic
+     name = @topic.name
      if @topic.destroy
        flash[:notice] = "\"#{name}\" was deleted successfully."
        redirect_to topics_path
      else
        flash[:error] = "There was an error deleting the topic."
        render :show
-     end
-   end
-   
-   def update
-     @topic = Topic.find(params[:id])
-     authorize @topic
-     if @topic.update_attributes(topic_params)
-       redirect_to @topic
-     else
-       flash[:error] = "Error saving topic. Please try again"
-       render :edit
      end
    end
    
