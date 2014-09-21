@@ -70,6 +70,7 @@ end
 gem 'binding_of_caller' 
 gem 'better_errors'
 
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
