@@ -3,7 +3,7 @@ class Vote < ActiveRecord::Base
   belongs_to :post
 
   validates :value, inclusion: { in: [-1, 1], message: "%{value} is not a valid vote." }
-    
+
   after_save :update_post
 
   def up_vote?
@@ -14,8 +14,10 @@ class Vote < ActiveRecord::Base
     value == -1
   end
 
-  private 
+  private
+
   def update_post
-    post.update_rank
+    self.post.update_rank  
   end
+
 end

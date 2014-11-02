@@ -1,31 +1,29 @@
-class VotesController < ApplicationController
-  before_action :load_post_and_vote
-  
-  def up_vote
-    update_vote!(1)
-    redirect_to :back
+class UsersController < ApplicationController
+  before_filter :authenticate_user!, except: :index
+
+  def index
+    @users = User.top_rated.paginate(page: params[:page], per_page: 10)
+    authorize @users
   end
 
-  def down_vote
-    update_vote!(-1)
-    redirect_to :back
+  def show
+    @user = User.find(params[:id])
+    authorize @user
+    @posts = @user.posts.visible_to(current_user)
+  end
+
+  def update
+    if current_user.update_attributes(user_params)
+      flash[:notice] = "User information updated"
+      redirect_to edit_user_registration_path(current_user)
+    else
+      render "devise/registrations/edit"
+    end
   end
 
   private
 
-   def load_post_and_vote
-    @post = Post.find(params[:post_id])
-    @vote = @post.votes.where(user_id: current_user.id).first
-   end
-
-  def update_vote!(new_value)
-    if @vote
-      authorize @vote, :update?
-      @vote.update_attribute(:value, new_value)
-    else
-      @vote = current_user.votes.build(value: new_value, post: @post)
-      authorize @vote, :create?
-      @vote.save
-    end
+  def user_params
+    params.require(:user).permit(:name, :avatar, :email_favorites)
   end
 end
